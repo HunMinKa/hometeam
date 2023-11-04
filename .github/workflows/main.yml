@@ -9,7 +9,7 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   AWS_S3_BUCKET: hometeamcicdbucket
-  AWS_CODE_DEPLOY_APPLICATION: cicid-hometeam-cd
+  AWS_CODE_DEPLOY_APPLICATION: cicd-hometeam-cd
   AWS_CODE_DEPLOY_GROUP: cicd-hometeam-cd-group
 
 jobs:
