@@ -1,4 +1,4 @@
-package spring.hometeam.domain.entity;
+package spring.hometeam.entity;
 
 import lombok.Data;
 
@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 @Entity
+@Data
 public class Task {
 
     @Id
@@ -21,5 +22,4 @@ public class Task {
     private Date dueDate;
     private String priority;
 
-    // 생성자, getters, setters 및 필요한 메서드들
 }
