@@ -1,4 +1,4 @@
-package spring.hometeam.config.utils;
+package spring.hometeam.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
