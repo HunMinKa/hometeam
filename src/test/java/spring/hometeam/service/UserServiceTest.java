@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import spring.hometeam.dto.RegisterUserDTO;
 import spring.hometeam.entity.User;
 import spring.hometeam.repository.UserRepository;
 
@@ -27,11 +28,12 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testRegisterUser() {
+    public void testRegisterUser() throws Exception {
         User user = new User(); // Populate with necessary data
         when(userRepository.save(user)).thenReturn(user);
+        RegisterUserDTO registerUserDTO =  new RegisterUserDTO();
 
-        User registered = userService.registerUser(user);
+        User registered = userService.registerUser(registerUserDTO);
 
         assertEquals(user, registered);
         verify(userRepository).save(user);

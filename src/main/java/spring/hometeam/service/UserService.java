@@ -1,16 +1,22 @@
 package spring.hometeam.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import spring.hometeam.dto.RegisterUserDTO;
 import spring.hometeam.entity.User;
 import spring.hometeam.exception.UsernameAlreadyExistsException;
 import spring.hometeam.repository.UserRepository;
+import spring.hometeam.utils.PkiUtils;
 
 import java.util.Optional;
 
+import static spring.hometeam.utils.JwtUtil.loadPrivateKey;
+
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
@@ -19,29 +25,37 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public User registerUser(User user) {
+    public User registerUser(RegisterUserDTO registerUserDTO) throws Exception {
 
-        if (usernameExists(user.getEmail())) {
-            throw new UsernameAlreadyExistsException("There is an account with that username: " + user.getEmail());
+        String email = String.valueOf(PkiUtils.extractEmailFromCSR(registerUserDTO.getCsr()));
+
+        if (userEmailExists(email)) {
+            throw new UsernameAlreadyExistsException("There is an account with that user email: " + email);
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        String pubKey = PkiUtils.compressPublicKey(PkiUtils.extractPublicKeyFromCSR(registerUserDTO.getCsr()));
+
+        String cert =  PkiUtils.generateCertificate(registerUserDTO.getCsr(),loadPrivateKey());
+
+
+        User user = new User();
+        user.setName(registerUserDTO.getName());
+        user.setEmail(email);
+        user.setPubKey(pubKey);
+        user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
+        user.setCert(cert);
+
         return userRepository.save(user);
     }
 
-    public User updateUser(User user) {
-        // 사용자 변경 로직
-        return userRepository.save(user);
-    }
+    public User updateUser(User user) { return userRepository.save(user);}
 
     public Optional<User> getUserById(int id) {
         return userRepository.findById(id);
     }
 
-    public void deleteUserById(int userId) {
-        // 사용자 삭제 로직
-        userRepository.deleteById(userId);
-    }
-    private boolean usernameExists(String username) {
-        return userRepository.findByName(username).isPresent();
+    public void deleteUserById(int userId) { userRepository.deleteById(userId); }
+    private boolean userEmailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
     }
 }

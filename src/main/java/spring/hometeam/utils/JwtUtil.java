@@ -6,61 +6,57 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.FileInputStream;
+import java.security.KeyFactory;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 import java.util.Date;
+import java.util.Properties;
 import java.util.function.Function;
 
-/*
-    설명
-    extractUsername, extractExpiration: 토큰에서 사용자 이름과 만료 시간을 추출하는 메서드입니다.
-    extractClaim: 토큰에서 특정 클레임을 추출하는 범용 메서드입니다.
-    generateToken: 사용자 이름을 받아 새로운 JWT 토큰을 생성합니다. 토큰은 서명 키와 함께 발급 및 만료 시간을 포함합니다.
-    validateToken: 제공된 토큰이 유효한지 검증합니다. 토큰이 만료되지 않았고, 저장된 사용자 이름이 토큰에 있는 사용자 이름과 일치하는지 확인합니다.
-
-    주의사항
-    @Value 어노테이션을 사용하여 application.properties 또는 application.yml 파일에서 jwt.secret (JWT 서명에 사용되는 비밀 키)과 jwt.expiration (토큰 만료 시간) 값을 주입받습니다. 이 값을 환경에 따라 적절하게 설정해야 합니다.
-     io.jsonwebtoken 라이브러리는 pom.xml 또는 build.gradle에 의존성으로 추가되어 있어야 합니다.*/
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
 
 @Component
 public class JwtUtil {
+    public static PrivateKey loadPrivateKey() throws Exception {
+        Properties prop = new Properties();
+        try (FileInputStream input = new FileInputStream("config.properties")) {
+            prop.load(input);
+            String privateKeyPEM = prop.getProperty("ecdsaPrivateKey").replace("\\n", "\n").replace("-----BEGIN PRIVATE KEY-----\n", "").replace("\n-----END PRIVATE KEY-----", "");
 
-    @Value("${jwt.secret}")
-    private String secretKey;
-
-    @Value("${jwt.expiration}")
-    private long jwtExpirationInMillis;
-
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+            byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
+            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
+            KeyFactory keyFactory = KeyFactory.getInstance("EC");
+            return keyFactory.generatePrivate(keySpec);
+        }
     }
 
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
+    public static String createJwtToken(String subject) throws Exception {
+        PrivateKey privateKey = loadPrivateKey();
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
+        long expMillis = nowMillis + 3600000; // 1시간 후 만료
+        Date exp = new Date(expMillis);
 
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    public String generateToken(String username) {
         return Jwts.builder()
-                .setSubject(username)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMillis))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setSubject(subject)
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(SignatureAlgorithm.ES256, privateKey)
                 .compact();
     }
 
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public static Jws<Claims> verifyJwtToken(String jwtToken, PublicKey publicKey) {
+        return Jwts.parser()
+                .setSigningKey(publicKey)
+                .parseClaimsJws(jwtToken);
     }
+
+
+
 }
