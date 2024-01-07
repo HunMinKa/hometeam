@@ -42,7 +42,7 @@ public class UserController {
 
 
 
-    @PostMapping("/register")
+    @PostMapping("/")
     public User registerUser(@RequestBody RegisterUserDTO registerUserDTO) throws Exception {
         return userService.registerUser(registerUserDTO);
     }
