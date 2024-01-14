@@ -58,7 +58,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable int userId) { userService.deleteUserById(userId);}
 
-    @PostMapping("/request-code")
+    @PostMapping("/auth-code")
     public ResponseEntity<?> requestCode(@RequestBody Map<String, String> request) {
 
         String email = request.get("email");
@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @PutMapping("/verify-code")
+    @PutMapping("/auth-code")
     public ResponseEntity<?> verifyCode(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String code = request.get("code");
