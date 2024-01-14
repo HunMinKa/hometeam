@@ -58,7 +58,7 @@ public class VerificationService {
         try {
             // 서명 인스턴스 초기화
             Signature sig = Signature.getInstance("SHA256withECDSA");
-            sig.initVerify(  loadCertificateFromPem(user.getCert()));
+            sig.initVerify(loadCertificateFromPem(user.getCert()));
             sig.update(Objects.requireNonNull(storedCode).getBytes());
 
             // 서명 검증

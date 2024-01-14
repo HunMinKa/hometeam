@@ -72,7 +72,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/verify-code")
+    @PutMapping("/verify-code")
     public ResponseEntity<?> verifyCode(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String code = request.get("code");
