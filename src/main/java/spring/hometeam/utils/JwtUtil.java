@@ -3,10 +3,12 @@ package spring.hometeam.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.hibernate.boot.cfgxml.internal.ConfigLoader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -24,7 +26,7 @@ import io.jsonwebtoken.Jwts;
 public class JwtUtil {
     public static PrivateKey loadPrivateKey() throws Exception {
         Properties prop = new Properties();
-        try (FileInputStream input = new FileInputStream("config.properties")) {
+        try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
             prop.load(input);
             String privateKeyPEM = prop.getProperty("ecdsaPrivateKey").replace("\\n", "\n").replace("-----BEGIN PRIVATE KEY-----\n", "").replace("\n-----END PRIVATE KEY-----", "");
 
