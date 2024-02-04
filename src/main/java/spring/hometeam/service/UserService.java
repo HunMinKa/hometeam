@@ -42,7 +42,8 @@ public class UserService {
         user.setName(registerUserDTO.getName());
         user.setEmail(email);
         user.setPubKey(pubKey);
-        user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
+        user.setEncKey(registerUserDTO.getEncKey());
+        //user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
         user.setCert(cert);
 
         return userRepository.save(user);
