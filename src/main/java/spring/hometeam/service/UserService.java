@@ -27,7 +27,12 @@ public class UserService {
 
     public User registerUser(RegisterUserDTO registerUserDTO) throws Exception {
 
-        String email = String.valueOf(PkiUtils.extractEmailFromCSR(registerUserDTO.getCsr()));
+        Optional<String> emailOptional = PkiUtils.extractEmailFromCSR(registerUserDTO.getCsr());
+        String email = null;
+
+        if (emailOptional.isPresent()) {
+            email = emailOptional.get(); // Optional에서 값 추출
+        }
 
         if (userEmailExists(email)) {
             throw new UsernameAlreadyExistsException("There is an account with that user email: " + email);
