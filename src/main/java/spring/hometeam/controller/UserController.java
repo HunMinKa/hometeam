@@ -116,7 +116,7 @@ public class UserController {
     public ResponseEntity<?> generateChallengeCode(@RequestBody Map<String, String> request) {
         String pubKey = request.get("pubKey");
         String code = verificationService.generateChallengeCode(pubKey);
-        return ResponseEntity.ok("Verification code sent to: " + code);
+        return ResponseEntity.ok(code);
     }
 
 

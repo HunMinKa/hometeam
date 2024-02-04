@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.hometeam.dto.RegisterUserDTO;
 import spring.hometeam.entity.User;
-import spring.hometeam.exception.UsernameAlreadyExistsException;
+import spring.hometeam.exception.UseremailAlreadyExistsException;
 import spring.hometeam.repository.UserRepository;
 import spring.hometeam.utils.PkiUtils;
 
@@ -35,7 +35,7 @@ public class UserService {
         }
 
         if (userEmailExists(email)) {
-            throw new UsernameAlreadyExistsException("There is an account with that user email: " + email);
+            throw new UseremailAlreadyExistsException("There is an account with that user email: " + email);
         }
 
         String pubKey = PkiUtils.compressPublicKey(PkiUtils.extractPublicKeyFromCSR(registerUserDTO.getCsr()));
