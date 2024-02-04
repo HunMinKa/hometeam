@@ -1,5 +1,6 @@
 package spring.hometeam.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -29,9 +30,11 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Date;
 import java.util.Optional;
 
+@Slf4j
 public class PkiUtils {
 
     public static Optional<String> extractEmailFromCSR(String csrString) throws Exception {
+        log.info("email csrString: " + csrString);
         PEMParser pemParser = new PEMParser(new StringReader(csrString));
         PKCS10CertificationRequest csr = (PKCS10CertificationRequest) pemParser.readObject();
 

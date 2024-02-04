@@ -26,7 +26,7 @@ public class JwtUtil {
             prop.load(input);
             String privateKeyPEM = prop.getProperty("ecdsaPrivateKey").replace("-----BEGIN PRIVATE KEY-----", "").replaceAll(System.lineSeparator(), "").replace("-----END PRIVATE KEY-----", "");
 
-            log.debug("privatekey: " + privateKeyPEM);
+            log.info("privatekey: " + privateKeyPEM);
 
             byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
