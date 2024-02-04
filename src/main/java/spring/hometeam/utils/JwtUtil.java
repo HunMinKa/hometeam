@@ -1,13 +1,13 @@
 package spring.hometeam.utils;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.cfgxml.internal.ConfigLoader;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -16,19 +16,17 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Properties;
-import java.util.function.Function;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-
+@Slf4j
 @Component
 public class JwtUtil {
     public static PrivateKey loadPrivateKey() throws Exception {
         Properties prop = new Properties();
         try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
             prop.load(input);
-            String privateKeyPEM = prop.getProperty("ecdsaPrivateKey").replace("\\n", "\n").replace("-----BEGIN PRIVATE KEY-----\n", "").replace("\n-----END PRIVATE KEY-----", "");
+            String privateKeyPEM = prop.getProperty("ecdsaPrivateKey").replace("-----BEGIN PRIVATE KEY-----", "").replaceAll(System.lineSeparator(), "").replace("-----END PRIVATE KEY-----", "");
+
+            log.debug("privatekey: " + privateKeyPEM);
 
             byte[] encoded = Base64.getDecoder().decode(privateKeyPEM);
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(encoded);
