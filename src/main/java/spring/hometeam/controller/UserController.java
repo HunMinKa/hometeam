@@ -58,7 +58,7 @@ public class UserController {
     public Optional<User> getUserById(@PathVariable int id) { return userService.getUserById(id); }
 
     @DeleteMapping("/{id}")
-    public void deleteUserById(@PathVariable int userId) { userService.deleteUserById(userId);}
+    public void deleteUserById(@PathVariable("id") int userId) { userService.deleteUserById(userId);}
 
     @PostMapping("/auth-code")
     public ResponseEntity<?> requestCode(@RequestBody Map<String, String> request) {
