@@ -2,20 +2,16 @@ package spring.hometeam.utils;
 
 import org.bouncycastle.asn1.x500.X500Name;
 import org.bouncycastle.asn1.x500.style.BCStyle;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.asn1.x509.GeneralName;
-import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
-import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
 import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.PEMWriter;
+import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
-import org.bouncycastle.util.io.pem.PemObject;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -30,7 +26,6 @@ import java.security.cert.X509Certificate;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECPoint;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
@@ -88,13 +83,17 @@ public class PkiUtils {
         Date endDate = new Date(System.currentTimeMillis() + (365 * 24 * 60 * 60 * 1000)); // 유효기간 1년
 
         SubjectPublicKeyInfo subjectPublicKeyInfo = csr.getSubjectPublicKeyInfo();
+
+        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
+        PublicKey csrPublicKey = converter.getPublicKey(subjectPublicKeyInfo);
+
         X509v3CertificateBuilder certBuilder = new JcaX509v3CertificateBuilder(
                 issuerName,
                 serialNumber,
                 startDate,
                 endDate,
                 csr.getSubject(),
-                (PublicKey) subjectPublicKeyInfo);
+                csrPublicKey);
 
         ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256withECDSA").build(caPrivateKey);
 
