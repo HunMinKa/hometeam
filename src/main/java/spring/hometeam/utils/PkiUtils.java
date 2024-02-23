@@ -19,7 +19,9 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
+import java.security.MessageDigest;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateFactory;
@@ -116,5 +118,10 @@ public class PkiUtils {
         try (InputStream certificateInputStream = new FileInputStream(pemFilePath)) {
             return (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
         }
+    }
+
+    public static byte[] hashMessage(String message) throws Exception {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        return digest.digest(message.getBytes(StandardCharsets.UTF_8));
     }
 }

@@ -14,12 +14,10 @@ import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import static spring.hometeam.utils.PkiUtils.hashMessage;
 import static spring.hometeam.utils.PkiUtils.loadCertificateFromPem;
 
 @Service
@@ -59,8 +57,9 @@ public class VerificationService {
             // 서명 인스턴스 초기화
             Signature sig = Signature.getInstance("SHA256withECDSA");
             sig.initVerify(loadCertificateFromPem(user.getCert()));
-            sig.update(Objects.requireNonNull(storedCode).getBytes());
+            sig.update(hashMessage(signature));
 
+            log.info("storedCode: " + Arrays.toString(hashMessage(signature)));
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
             return sig.verify(signatureBytes);
