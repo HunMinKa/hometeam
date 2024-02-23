@@ -36,7 +36,7 @@ import java.util.Optional;
 public class PkiUtils {
 
     public static Optional<String> extractEmailFromCSR(String csrString) throws Exception {
-        log.info("email csrString: " + csrString);
+        log.debug("email csrString: " + csrString);
         PEMParser pemParser = new PEMParser(new StringReader(csrString));
         PKCS10CertificationRequest csr = (PKCS10CertificationRequest) pemParser.readObject();
 
