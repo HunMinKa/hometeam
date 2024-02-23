@@ -109,12 +109,15 @@ public class PkiUtils {
         return stringWriter.toString();
     }
 
-    public static X509Certificate loadCertificateFromPem(String pem) throws Exception {
+    public static X509Certificate loadCertificateFromPem(String certPem) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 
         // PEM 형식의 인증서를 로드
-        InputStream rootCertInputStream = new ByteArrayInputStream(pem.getBytes());
-        return (X509Certificate) certificateFactory.generateCertificate(rootCertInputStream);
+        InputStream certInputStream = new ByteArrayInputStream(certPem.getBytes());
+        X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certInputStream);
+        PublicKey publicKey = certificate.getPublicKey();
+        log.info("공개키"+ compressPublicKey(publicKey));
+        return certificate;
 
     }
 
