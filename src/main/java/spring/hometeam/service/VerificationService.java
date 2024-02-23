@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import spring.hometeam.entity.User;
 import spring.hometeam.repository.UserRepository;
 
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PublicKey;
 import java.security.Signature;
@@ -56,7 +57,7 @@ public class VerificationService {
             sig.initVerify(loadPubKeyFromPem(user.getCert()));
             assert storedCode != null;
             log.info("storedCode: " + storedCode);
-            sig.update(storedCode.getBytes());
+            sig.update(storedCode.getBytes(StandardCharsets.UTF_8));
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
             log.info("signatureBytes: " + Arrays.toString(signatureBytes));
