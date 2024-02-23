@@ -55,8 +55,7 @@ public class VerificationService {
             // 서명 인스턴스 초기화
             Signature sig = Signature.getInstance("SHA256withECDSA");
             sig.initVerify(loadCertificateFromPem(user.getCert()));
-            assert storedCode != null;
-            sig.update(hashMessage(storedCode));
+            sig.update(Objects.requireNonNull(storedCode).getBytes());
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
             log.info("signatureBytes: " + Arrays.toString(signatureBytes));
