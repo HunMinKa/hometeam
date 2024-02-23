@@ -14,10 +14,7 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
+import java.io.*;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
@@ -112,12 +109,13 @@ public class PkiUtils {
         return stringWriter.toString();
     }
 
-    public static X509Certificate loadCertificateFromPem(String pemFilePath) throws Exception {
+    public static X509Certificate loadCertificateFromPem(String pem) throws Exception {
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
 
-        try (InputStream certificateInputStream = new FileInputStream(pemFilePath)) {
-            return (X509Certificate) certificateFactory.generateCertificate(certificateInputStream);
-        }
+        // PEM 형식의 인증서를 로드
+        InputStream rootCertInputStream = new ByteArrayInputStream(pem.getBytes());
+        return (X509Certificate) certificateFactory.generateCertificate(rootCertInputStream);
+
     }
 
     public static byte[] hashMessage(String message) throws Exception {

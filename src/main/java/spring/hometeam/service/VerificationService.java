@@ -54,6 +54,7 @@ public class VerificationService {
         log.info("user: " + user.getCert());
         String storedCode = redisTemplate.opsForValue().get(pubKey);
         log.info("storedCode: " + storedCode);
+        log.info("signature: " + signature);
         try {
             // 서명 인스턴스 초기화
             log.info("1");
