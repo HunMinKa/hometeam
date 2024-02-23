@@ -15,7 +15,6 @@ import spring.hometeam.dto.LoginWebDTO;
 import spring.hometeam.dto.RegisterUserDTO;
 import spring.hometeam.provider.JwtTokenProvider;
 import spring.hometeam.dto.AuthenticationResponse;
-import spring.hometeam.dto.LoginDto;
 import spring.hometeam.service.EmailService;
 import spring.hometeam.service.VerificationService;
 import spring.hometeam.utils.JwtUtil;
@@ -25,7 +24,6 @@ import spring.hometeam.service.UserService;
 import javax.mail.MessagingException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @Slf4j
