@@ -56,17 +56,19 @@ public class VerificationService {
         log.info("storedCode: " + storedCode);
         try {
             // 서명 인스턴스 초기화
+            log.info("1");
             Signature sig = Signature.getInstance("SHA256withECDSA");
+            log.info("2");
             sig.initVerify(loadCertificateFromPem(user.getCert()));
+            log.info("3");
             sig.update(hashMessage(signature));
-
             log.info("storedCode: " + Arrays.toString(hashMessage(signature)));
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
             return sig.verify(signatureBytes);
 
         } catch (Exception e) {
-            log.info("error: " + e.getMessage());
+            log.info("error: " + e.getMessage().toString());
             return false;
         }
     }
