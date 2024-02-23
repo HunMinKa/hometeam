@@ -115,12 +115,17 @@ public class PkiUtils {
         // PEM 형식의 인증서를 로드
         InputStream certInputStream = new ByteArrayInputStream(certPem.getBytes());
         X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certInputStream);
-        PublicKey publicKey = certificate.getPublicKey();
-        log.info("공개키"+ compressPublicKey(publicKey));
         return certificate;
 
     }
+    public static PublicKey loadPubKeyFromPem(String certPem) throws Exception {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        // PEM 형식의 인증서를 로드
+        InputStream certInputStream = new ByteArrayInputStream(certPem.getBytes());
+        X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(certInputStream);
+        return certificate.getPublicKey();
 
+    }
     public static byte[] hashMessage(String message) throws Exception {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         return digest.digest(message.getBytes(StandardCharsets.UTF_8));

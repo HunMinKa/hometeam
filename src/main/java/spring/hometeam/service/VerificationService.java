@@ -17,8 +17,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-import static spring.hometeam.utils.PkiUtils.hashMessage;
-import static spring.hometeam.utils.PkiUtils.loadCertificateFromPem;
+import static spring.hometeam.utils.PkiUtils.*;
 
 @Service
 @Slf4j
@@ -54,7 +53,7 @@ public class VerificationService {
         try {
             // 서명 인스턴스 초기화
             Signature sig = Signature.getInstance("SHA256withECDSA");
-            sig.initVerify(loadCertificateFromPem(user.getCert()));
+            sig.initVerify(loadPubKeyFromPem(user.getCert()));
             assert storedCode != null;
             log.info("storedCode: " + storedCode);
             sig.update(storedCode.getBytes());
