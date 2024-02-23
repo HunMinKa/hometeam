@@ -62,7 +62,8 @@ public class VerificationService {
             log.info("2");
             sig.initVerify(loadCertificateFromPem(user.getCert()));
             log.info("3");
-            sig.update(hashMessage(signature));
+            assert storedCode != null;
+            sig.update(hashMessage(storedCode));
             log.info("storedCode: " + Arrays.toString(hashMessage(signature)));
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
