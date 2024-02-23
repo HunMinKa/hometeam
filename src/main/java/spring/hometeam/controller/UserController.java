@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import spring.hometeam.dto.LoginMobDTO;
+import spring.hometeam.dto.LoginWebDTO;
 import spring.hometeam.dto.RegisterUserDTO;
 import spring.hometeam.provider.JwtTokenProvider;
 import spring.hometeam.dto.AuthenticationResponse;
@@ -90,7 +92,7 @@ public class UserController {
 
 
     @PostMapping("web/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginWebDTO loginDto) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 
@@ -101,7 +103,8 @@ public class UserController {
 
     }
     @PutMapping("/challenge")
-    public ResponseEntity<?> verifyChallenge(@RequestBody LoginDto loginDto) throws Exception {
+    public ResponseEntity<?> verifyChallenge(@RequestBody LoginMobDTO loginDto) throws Exception {
+        log.info("logindto"+ loginDto.toString());
         boolean isVerified = verificationService.verifyChallenge(loginDto.getSignature(), loginDto.getPubKey());
 
         if (isVerified) {

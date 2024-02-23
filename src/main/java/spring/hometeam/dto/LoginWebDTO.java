@@ -5,10 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LoginDto {
+public class LoginWebDTO {
 
     private String email;
     private String password;
-    private String signature;
-    private String pubKey;
+
 }

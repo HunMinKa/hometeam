@@ -49,24 +49,24 @@ public class VerificationService {
     }
 
     public boolean verifyChallenge(String signature, String pubKey) throws Exception {
-        log.debug("pubKey: " + pubKey);
+        log.info("pubKey: " + pubKey);
         User user = userRepository.findByPubKey(pubKey);
-        log.debug("user: " + user.getCert());
+        log.info("user: " + user.getCert());
         String storedCode = redisTemplate.opsForValue().get(pubKey);
-        log.debug("storedCode: " + storedCode);
+        log.info("storedCode: " + storedCode);
         try {
             // 서명 인스턴스 초기화
             Signature sig = Signature.getInstance("SHA256withECDSA");
             sig.initVerify(loadCertificateFromPem(user.getCert()));
             sig.update(hashMessage(signature));
 
-            log.debug("storedCode: " + Arrays.toString(hashMessage(signature)));
+            log.info("storedCode: " + Arrays.toString(hashMessage(signature)));
             // 서명 검증
             byte[] signatureBytes = Base64.getDecoder().decode(signature);
             return sig.verify(signatureBytes);
 
         } catch (Exception e) {
-            log.debug("error: " + e.getMessage());
+            log.info("error: " + e.getMessage());
             return false;
         }
     }
