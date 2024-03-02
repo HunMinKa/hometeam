@@ -62,7 +62,7 @@ public class VerificationService {
         String storedCode = redisTemplate.opsForValue().get(pubKey);
         try {
             
-            Optional<ECPublicKey> ecPublicKey = null;
+            Optional<ECPublicKey> ecPublicKey;
             Signature signatureVerifier;
             
             Security.addProvider (new BouncyCastleProvider());
@@ -108,7 +108,7 @@ public class VerificationService {
         Optional<ECPublicKey> ecPublicKey;
 
         try {
-            parameterSpec = getECParameterSpec();
+            parameterSpec = getECsParameterSpec();
             ecPoint = ECPointUtil.decodePoint(parameterSpec.getCurve(), uncompressedPublicKey);
             ecPublicKeySpec = new ECPublicKeySpec(ecPoint, parameterSpec);
             ecPublicKey = Optional.ofNullable(
@@ -121,7 +121,7 @@ public class VerificationService {
         }
         return ecPublicKey;
     }
-    private static ECParameterSpec getECParameterSpec() {
+    private static ECParameterSpec getECsParameterSpec() {
         AlgorithmParameters parameters;
 
         try {
