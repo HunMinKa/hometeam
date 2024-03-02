@@ -109,9 +109,16 @@ public class UserController {
 
         if (isVerified) {
             log.info("pubKey: " + loginDto.getPubKey());
-            log.info("jwt: " + userService.getUserInfoForToken(loginDto.getPubKey()).toString());
-            String jwt = JwtUtil.createJwtToken(userService.getUserInfoForToken(loginDto.getPubKey()));
-            return ResponseEntity.ok(new AuthenticationResponse(jwt));
+            Optional<UserInfoDTO> userInfoDTOOptional = userService.getUserInfoForToken(loginDto.getPubKey());
+
+            if (userInfoDTOOptional.isPresent()) {
+                UserInfoDTO userInfoDTO = userInfoDTOOptional.get();
+                log.info("userInfoDTO: " + userInfoDTO.getEmail());
+                String jwt = JwtUtil.createJwtToken(userInfoDTO);
+                return ResponseEntity.ok(new AuthenticationResponse(jwt));
+            } else {
+                throw new IllegalArgumentException("No user found with the provided public key");
+            }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Challenge verification failed");
         }
