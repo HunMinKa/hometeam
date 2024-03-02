@@ -74,7 +74,7 @@ public class UserService {
     public Optional<UserEncKeyDTO> getUserEncKey(String email) {
         return userRepository.findByEmail(email).map(user -> {
         UserEncKeyDTO userEncKeyDTO = new UserEncKeyDTO();
-        userEncKeyDTO.setEncKey(email);
+        userEncKeyDTO.setEncKey(user.getEncKey());
         return userEncKeyDTO;
         });
     }
