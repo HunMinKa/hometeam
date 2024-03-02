@@ -56,6 +56,9 @@ public class UserController {
     @GetMapping("/{id}")
     public Optional<UserInfoDTO> getUserById(@PathVariable("id") int id) { return userService.getUserById(id); }
 
+    @GetMapping("restore/{email}")
+    public Optional<UserEncKeyDTO> getUserById(@PathVariable("email") String email) { return userService.getUserEncKey(email); }
+
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable("id") int id) { userService.deleteUserById(id);}
 

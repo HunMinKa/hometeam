@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.hometeam.dto.RegisterUserDTO;
+import spring.hometeam.dto.UserEncKeyDTO;
 import spring.hometeam.dto.UserInfoDTO;
 import spring.hometeam.entity.User;
 import spring.hometeam.exception.UseremailAlreadyExistsException;
@@ -59,19 +60,24 @@ public class UserService {
 
     public Optional<UserInfoDTO> getUserById(int id) {
         return userRepository.findById(id).map(user -> {
-
             UserInfoDTO userInfoDTO = new UserInfoDTO();
             userInfoDTO.setId(user.getId());
             userInfoDTO.setPubKey(user.getPubKey());
             userInfoDTO.setName(user.getName());
             userInfoDTO.setEmail(user.getEmail());
-
-            // User 엔티티의 다른 필요한 필드를 UserDTO로 복사
             return userInfoDTO;
         });
     }
 
     public void deleteUserById(int userId) { userRepository.deleteById(userId); }
+
+    public Optional<UserEncKeyDTO> getUserEncKey(String email) {
+        return userRepository.findByEmail(email).map(user -> {
+        UserEncKeyDTO userEncKeyDTO = new UserEncKeyDTO();
+        userEncKeyDTO.setEncKey(email);
+        return userEncKeyDTO;
+        });
+    }
     private boolean userEmailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
