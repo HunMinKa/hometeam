@@ -108,6 +108,8 @@ public class UserController {
         boolean isVerified = verificationService.verifyChallenge(loginDto.getSignature(), loginDto.getPubKey());
 
         if (isVerified) {
+            log.debug("pubKey: " + loginDto.getPubKey());
+            log.debug("jwt: " + userService.getUserInfoForToken(loginDto.getPubKey()));
             String jwt = JwtUtil.createJwtToken(userService.getUserInfoForToken(loginDto.getPubKey()));
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } else {
