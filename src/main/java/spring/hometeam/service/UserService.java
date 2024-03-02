@@ -78,6 +78,16 @@ public class UserService {
         return userEncKeyDTO;
         });
     }
+    public Optional<UserInfoDTO> getUserInfoForToken(String pubKey) {
+        return userRepository.findByPubKey(pubKey).map(user -> {
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setId(user.getId());
+            userInfoDTO.setPubKey(user.getPubKey());
+            userInfoDTO.setName(user.getName());
+            userInfoDTO.setEmail(user.getEmail());
+            return userInfoDTO;
+        });
+    }
     private boolean userEmailExists(String email) {
         return userRepository.findByEmail(email).isPresent();
     }

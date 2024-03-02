@@ -108,7 +108,7 @@ public class UserController {
         boolean isVerified = verificationService.verifyChallenge(loginDto.getSignature(), loginDto.getPubKey());
 
         if (isVerified) {
-            String jwt = JwtUtil.createJwtToken(String.valueOf(loginDto));
+            String jwt = JwtUtil.createJwtToken(userService.getUserInfoForToken(loginDto.getPubKey()));
             return ResponseEntity.ok(new AuthenticationResponse(jwt));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Challenge verification failed");

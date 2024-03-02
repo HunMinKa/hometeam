@@ -61,8 +61,9 @@ public class VerificationService {
             throw new NoSuchElementException("Authentication code not found.");
         }
     }
+
     public boolean verifyChallenge(String signature, String pubKey) throws Exception {
-        User user = userRepository.findByPubKey(pubKey);
+        Optional<User> user = userRepository.findByPubKey(pubKey);
         String storedCode = redisTemplate.opsForValue().get(pubKey);
         try {
             

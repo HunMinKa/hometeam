@@ -1,5 +1,6 @@
 package spring.hometeam.utils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -20,6 +21,7 @@ import java.util.Properties;
 @Slf4j
 @Component
 public class JwtUtil {
+    private static final ObjectMapper objectMapper = new ObjectMapper();
     public static PrivateKey loadPrivateKey() throws Exception {
         Properties prop = new Properties();
         try (InputStream input = ConfigLoader.class.getClassLoader().getResourceAsStream("config.properties")) {
@@ -35,8 +37,10 @@ public class JwtUtil {
         }
     }
 
-    public static String createJwtToken(String subject) throws Exception {
+    public static String createJwtToken(Object  subjectObject) throws Exception {
         PrivateKey privateKey = loadPrivateKey();
+
+        String subject = objectMapper.writeValueAsString(subjectObject);
 
         long nowMillis = System.currentTimeMillis();
         Date now = new Date(nowMillis);
@@ -57,6 +61,8 @@ public class JwtUtil {
                 .parseClaimsJws(jwtToken);
     }
 
-
+    public static String convertObjectToJson(Object object) throws Exception {
+        return objectMapper.writeValueAsString(object);
+    }
 
 }
