@@ -11,4 +11,5 @@ public class RegisterUserDTO {
     private String encKey;
     private String csr;
     private String password;
+    private String authCode;
 }

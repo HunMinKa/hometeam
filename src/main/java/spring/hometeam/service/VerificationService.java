@@ -22,11 +22,8 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-
-import static spring.hometeam.utils.PkiUtils.*;
 
 
 @Service
@@ -52,11 +49,18 @@ public class VerificationService {
     }
 
 
-    public boolean verifyCode(String email, String code) {
+    public boolean verifyEmail(String email, String code) {
         String storedCode = redisTemplate.opsForValue().get(email);
-        return code.equals(storedCode);
+        boolean codeVerify = code.equals(storedCode);
+        redisTemplate.opsForValue().set(code, codeVerify ? "1" : "0", 10, TimeUnit.MINUTES);
+        return codeVerify;
     }
-
+    public void verifyCode(String code) {
+        String status = redisTemplate.opsForValue().get(code);
+        if(Objects.equals(status, "0")){
+            throw new NoSuchElementException("Authentication code not found.");
+        }
+    }
     public boolean verifyChallenge(String signature, String pubKey) throws Exception {
         User user = userRepository.findByPubKey(pubKey);
         String storedCode = redisTemplate.opsForValue().get(pubKey);

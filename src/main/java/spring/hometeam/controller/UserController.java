@@ -10,11 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import spring.hometeam.dto.LoginMobDTO;
-import spring.hometeam.dto.LoginWebDTO;
-import spring.hometeam.dto.RegisterUserDTO;
+import spring.hometeam.dto.*;
 import spring.hometeam.provider.JwtTokenProvider;
-import spring.hometeam.dto.AuthenticationResponse;
 import spring.hometeam.service.EmailService;
 import spring.hometeam.service.VerificationService;
 import spring.hometeam.utils.JwtUtil;
@@ -46,6 +43,8 @@ public class UserController {
 
     @PostMapping("/")
     public User registerUser(@RequestBody RegisterUserDTO registerUserDTO) throws Exception {
+
+        verificationService.verifyCode(registerUserDTO.getAuthCode());
         return userService.registerUser(registerUserDTO);
     }
 
@@ -55,7 +54,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<User> getUserById(@PathVariable("id") int id) { return userService.getUserById(id); }
+    public Optional<UserInfoDTO> getUserById(@PathVariable("id") int id) { return userService.getUserById(id); }
 
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable("id") int id) { userService.deleteUserById(id);}
@@ -79,7 +78,7 @@ public class UserController {
         String email = request.get("email");
         String code = request.get("code");
 
-        boolean isVerified = verificationService.verifyCode(email, code);
+        boolean isVerified = verificationService.verifyEmail(email, code);
 
         if (isVerified) {
             return ResponseEntity.ok("Code verified successfully");
@@ -102,7 +101,7 @@ public class UserController {
     }
     @PutMapping("/challenge")
     public ResponseEntity<?> verifyChallenge(@RequestBody LoginMobDTO loginDto) throws Exception {
-        log.info("logindto"+ loginDto.toString());
+
         boolean isVerified = verificationService.verifyChallenge(loginDto.getSignature(), loginDto.getPubKey());
 
         if (isVerified) {

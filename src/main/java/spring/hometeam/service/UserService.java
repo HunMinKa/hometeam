@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import spring.hometeam.dto.RegisterUserDTO;
+import spring.hometeam.dto.UserInfoDTO;
 import spring.hometeam.entity.User;
 import spring.hometeam.exception.UseremailAlreadyExistsException;
 import spring.hometeam.repository.UserRepository;
@@ -56,8 +57,18 @@ public class UserService {
 
     public User updateUser(User user) { return userRepository.save(user);}
 
-    public Optional<User> getUserById(int id) {
-        return userRepository.findById(id);
+    public Optional<UserInfoDTO> getUserById(int id) {
+        return userRepository.findById(id).map(user -> {
+
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setId(user.getId());
+            userInfoDTO.setPubKey(user.getPubKey());
+            userInfoDTO.setName(user.getName());
+            userInfoDTO.setEmail(user.getEmail());
+
+            // User 엔티티의 다른 필요한 필드를 UserDTO로 복사
+            return userInfoDTO;
+        });
     }
 
     public void deleteUserById(int userId) { userRepository.deleteById(userId); }

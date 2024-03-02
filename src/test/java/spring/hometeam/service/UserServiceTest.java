@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import spring.hometeam.dto.RegisterUserDTO;
+import spring.hometeam.dto.UserInfoDTO;
 import spring.hometeam.entity.User;
 import spring.hometeam.repository.UserRepository;
 
@@ -56,7 +57,7 @@ public class UserServiceTest {
         User user = new User(); // Populate with necessary data
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
-        Optional<User> foundUser = userService.getUserById(userId);
+        Optional<UserInfoDTO> foundUser = userService.getUserById(userId);
 
         assertTrue(foundUser.isPresent());
         assertEquals(user, foundUser.get());
