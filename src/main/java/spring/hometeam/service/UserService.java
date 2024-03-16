@@ -50,6 +50,7 @@ public class UserService {
         user.setEmail(email);
         user.setPubKey(pubKey);
         user.setEncKey(registerUserDTO.getEncKey());
+        user.setPushId(registerUserDTO.getPushId());
         //user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
         user.setCert(cert);
 

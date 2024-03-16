@@ -17,4 +17,5 @@ public class User {
     private String name;
     private String password;
     private String cert;
+    private String pushId;
 }

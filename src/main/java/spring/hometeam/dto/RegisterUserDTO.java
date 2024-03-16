@@ -12,4 +12,5 @@ public class RegisterUserDTO {
     private String csr;
     private String password;
     private String authCode;
+    private String pushId;
 }
