@@ -2,11 +2,10 @@ package spring.hometeam.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -19,4 +18,6 @@ public class Team {
     private Date createDate;
     private Date updateDate;
 
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
+    private Set<TeamMembership> teamMembership  = new HashSet<>();
 }

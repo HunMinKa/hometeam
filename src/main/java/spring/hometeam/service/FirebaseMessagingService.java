@@ -5,7 +5,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import org.springframework.stereotype.Service;
 
-@Service
+//@Service
 public class FirebaseMessagingService {
 
     public String sendNotification(String title, String body, String token) throws Exception {

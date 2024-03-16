@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Configuration
+//@Configuration
 public class FirebaseConfig {
 
-    @Bean
+    //@Bean
     public FirebaseApp createFirebaseApp() throws IOException {
         // resources 폴더 내의 서비스 계정 파일 참조
         FileInputStream serviceAccount = new FileInputStream("./hometeam-220ad-firebase-adminsdk-7lciv-407c1c2a8d.json");
