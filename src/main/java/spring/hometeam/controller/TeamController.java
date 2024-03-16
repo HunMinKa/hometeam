@@ -2,6 +2,7 @@ package spring.hometeam.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import spring.hometeam.dto.TeamDTO;
 import spring.hometeam.entity.Team;
 import spring.hometeam.entity.TeamMembership;
 import spring.hometeam.service.TeamMembershipService;
@@ -23,8 +24,8 @@ public class TeamController {
     }
 
     // 팀 생성 API 예제
-    @PostMapping
-    public Team createTeam(@RequestBody Team team) {
+    @PostMapping("/")
+    public Team createTeam(@RequestBody TeamDTO team) {
         return teamService.createTeam(team);
     }
 

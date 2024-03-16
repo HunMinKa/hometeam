@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import spring.hometeam.dto.TeamDTO;
 import spring.hometeam.entity.Team;
 import spring.hometeam.repository.TeamRepository;
 
@@ -33,7 +34,8 @@ public class TeamServiceTest {
         Team team = new Team(); // Populate with necessary data
         when(teamRepository.save(team)).thenReturn(team);
 
-        Team created = teamService.createTeam(team);
+        TeamDTO teamDTO = new TeamDTO(); // Populate with necessary data
+        Team created = teamService.createTeam(teamDTO);
 
         assertEquals(team, created);
         verify(teamRepository).save(team);
