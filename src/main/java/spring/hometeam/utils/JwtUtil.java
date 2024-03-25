@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.boot.cfgxml.internal.ConfigLoader;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -64,5 +65,11 @@ public class JwtUtil {
     public static String convertObjectToJson(Object object) throws Exception {
         return objectMapper.writeValueAsString(object);
     }
-
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 }

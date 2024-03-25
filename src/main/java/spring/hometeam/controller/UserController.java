@@ -53,11 +53,11 @@ public class UserController {
         return userService.updateUser(user);
     }
 
-    @GetMapping("/{id}")
-    public Optional<UserInfoDTO> getUserById(@PathVariable("id") int id) { return userService.getUserById(id); }
+    @GetMapping("/{email}")
+    public Optional<UserInfoDTO> getUserByEmail(@PathVariable("email") String email) { return userService.getUserByEmail(email); }
 
     @GetMapping("restore/{email}")
-    public Optional<UserEncKeyDTO> getUserById(@PathVariable("email") String email) { return userService.getUserEncKey(email); }
+    public Optional<UserEncKeyDTO> getUserEncKeyByEmail(@PathVariable("email") String email) { return userService.getUserEncKey(email); }
 
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable("id") int id) { userService.deleteUserById(id);}

@@ -11,4 +11,5 @@ public class UserInfoDTO {
     private String name;
     private String email;
     private String pubKey;
+    private String pushId;
 }

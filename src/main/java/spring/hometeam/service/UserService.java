@@ -69,6 +69,14 @@ public class UserService {
             return userInfoDTO;
         });
     }
+    public Optional<UserInfoDTO> getUserByEmail(String email) {
+        return userRepository.findByEmail(email).map(user -> {
+            UserInfoDTO userInfoDTO = new UserInfoDTO();
+            userInfoDTO.setPubKey(user.getPubKey());
+            userInfoDTO.setPushId(user.getPushId());
+            return userInfoDTO;
+        });
+    }
 
     public void deleteUserById(int userId) { userRepository.deleteById(userId); }
 

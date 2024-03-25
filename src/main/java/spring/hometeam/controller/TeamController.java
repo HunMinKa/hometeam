@@ -7,7 +7,10 @@ import spring.hometeam.entity.Team;
 import spring.hometeam.entity.TeamMembership;
 import spring.hometeam.service.TeamMembershipService;
 import spring.hometeam.service.TeamService;
+import spring.hometeam.utils.Common;
+import spring.hometeam.utils.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +19,8 @@ import java.util.Optional;
 public class TeamController {
     private final TeamService teamService;
     private final TeamMembershipService teamMembershipService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @Autowired
     public TeamController(TeamService teamService, TeamMembershipService teamMembershipService) {
@@ -25,7 +30,9 @@ public class TeamController {
 
     // 팀 생성 API 예제
     @PostMapping("/")
-    public Team createTeam(@RequestBody TeamDTO team) {
+    public Team createTeam(HttpServletRequest request, @RequestBody TeamDTO team) {
+
+   
         return teamService.createTeam(team);
     }
 

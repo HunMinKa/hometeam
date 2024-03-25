@@ -13,8 +13,8 @@ public class Team {
 
     @Id
     private String teamId;
-    private String teamKey;
     private String teamName;
+    private String teamCert;
     private Date createDate;
     private Date updateDate;
 
