@@ -17,7 +17,4 @@ public class Team {
     private String teamCert;
     private Date createDate;
     private Date updateDate;
-
-    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
-    private Set<TeamMembership> teamMembership  = new HashSet<>();
 }
