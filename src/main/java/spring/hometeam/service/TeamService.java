@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import spring.hometeam.dto.TeamDTO;
+import spring.hometeam.dto.TeamMemberDTO;
+import spring.hometeam.dto.UserInfoDTO;
 import spring.hometeam.entity.Team;
 import spring.hometeam.entity.User;
 import spring.hometeam.repository.TeamRepository;
@@ -29,6 +31,13 @@ public class TeamService {
         team.setUpdateDate(new Date());
         return teamRepository.save(team);
     }
+
+
+    public Optional<TeamMemberDTO> inviteTeamMember(TeamMemberDTO teamMemberDTO) {
+        TeamMemberDTO teamMember = new TeamMemberDTO();
+        return Optional.of(teamMember);
+    }
+
 
     public List<Team> getAllTeams() {
         return teamRepository.findAll();

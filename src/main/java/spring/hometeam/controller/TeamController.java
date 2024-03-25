@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.hometeam.dto.TeamDTO;
+import spring.hometeam.dto.TeamMemberDTO;
 import spring.hometeam.entity.Team;
 import spring.hometeam.entity.TeamMembership;
 import spring.hometeam.service.TeamMembershipService;
@@ -38,7 +39,10 @@ public class TeamController {
         log.info("팀생성" + token);
         return teamService.createTeam(team);
     }
-
+    @PostMapping("/invitations")
+    public Optional<TeamMemberDTO> inviteTeamMember(HttpServletRequest request, @RequestBody TeamMemberDTO teamMemberDTO) {
+        return teamService.inviteTeamMember(teamMemberDTO);
+    }
     // 모든 팀 조회 API 예제
     @GetMapping("/")
     public List<Team> getAllTeams(HttpServletRequest request) {

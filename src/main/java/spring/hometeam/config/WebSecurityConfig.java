@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // CSRF 보호 비활성화 (상황에 따라 조정)
                 .authorizeRequests()
                 .antMatchers("/users/**").permitAll() // 회원가입과 로그인 경로 인증 제외
+                .antMatchers("/teams/**").permitAll() // 회원가입과 로그인 경로 인증 제외
                 .anyRequest().authenticated();
     }
 }
