@@ -1,5 +1,6 @@
 package spring.hometeam.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import spring.hometeam.dto.TeamDTO;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@Slf4j
 @RequestMapping("/teams")
 public class TeamController {
     private final TeamService teamService;
@@ -33,7 +35,7 @@ public class TeamController {
     public Team createTeam(HttpServletRequest request, @RequestBody TeamDTO team) {
 
         String token = jwtUtil.extractTokenFromRequest(request);
-        System.out.println("팀생성" + token);
+        log.info("팀생성" + token);
         return teamService.createTeam(team);
     }
 
@@ -41,7 +43,7 @@ public class TeamController {
     @GetMapping("/")
     public List<Team> getAllTeams(HttpServletRequest request) {
         String token = jwtUtil.extractTokenFromRequest(request);
-        System.out.println("팀조회"+ token);
+        log.info("팀조회" + token);
         return teamService.getAllTeams();
     }
 
