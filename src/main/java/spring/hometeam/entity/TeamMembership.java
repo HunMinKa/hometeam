@@ -15,9 +15,4 @@ public class TeamMembership {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id", referencedColumnName = "teamId")
     private Team team;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_pub_key", referencedColumnName = "pubKey")
-    private User user;
-
 }

@@ -20,7 +20,4 @@ public class User {
     private String password;
     private String cert;
     private String pushId;
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<TeamMembership> teamMembership  = new HashSet<>();
 }
