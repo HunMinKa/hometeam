@@ -32,13 +32,16 @@ public class TeamController {
     @PostMapping("/")
     public Team createTeam(HttpServletRequest request, @RequestBody TeamDTO team) {
 
-
+        String token = jwtUtil.extractTokenFromRequest(request);
+        System.out.println("팀생성" + token);
         return teamService.createTeam(team);
     }
 
     // 모든 팀 조회 API 예제
-    @GetMapping
-    public List<Team> getAllTeams() {
+    @GetMapping("/")
+    public List<Team> getAllTeams(HttpServletRequest request) {
+        String token = jwtUtil.extractTokenFromRequest(request);
+        System.out.println("팀조회"+ token);
         return teamService.getAllTeams();
     }
 
