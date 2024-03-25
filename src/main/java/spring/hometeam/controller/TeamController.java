@@ -32,7 +32,7 @@ public class TeamController {
     @PostMapping("/")
     public Team createTeam(HttpServletRequest request, @RequestBody TeamDTO team) {
 
-   
+
         return teamService.createTeam(team);
     }
 

@@ -24,7 +24,6 @@ public class TeamService {
 
         Team team = new Team();
         team.setTeamId(teamDTO.getTeamId());
-        team.setTeamKey(teamDTO.getTeamKey());
         team.setTeamName(teamDTO.getTeamName());
         team.setCreateDate(new Date());
         team.setUpdateDate(new Date());
